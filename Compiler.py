@@ -1,4 +1,4 @@
-from queue import Empty
+
 import string
 
 
@@ -13,6 +13,7 @@ tokens= [
         ['diagonal','/'],
         ['guion','-'],
         ['guionB','_'],
+        ['PP','..'],
         ['numero',list(string.digits)],
         ['letra',list(string.ascii_letters)]
         ]
@@ -35,6 +36,7 @@ if __name__ == '__main__':
                 print(f'Token: {tokens[e][0]}')
                 band = True
                 break
+
         if band == False:       
             for z in range(len(palabra)):
 
@@ -46,12 +48,14 @@ if __name__ == '__main__':
 
                         if tokens[e][1].count(char) > 0:
                             print(f'Token: {tokens[e][0]}')
+                            band = True
                             break
                     
                     elif char == tokens[e][1]:
                         print(f'Token: {tokens[e][0]}')
+                        band = True
                         break
 
-
-
-    # print(command)
+        if band == False:
+            print(f'El carater siguiente no existe dentro de nuestros tokens {command[i]}')
+            break
