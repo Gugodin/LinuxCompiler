@@ -25,7 +25,79 @@ class main(QMainWindow):
         ['numero',list(string.digits)],
         ['letra',list(string.ascii_letters)]
         ]
+        self.ui.buttonC.clicked.connect(self.getTockens)
 
+
+    def getTockens(self):
+        self.ui.tokens.setText('')
+        command = self.ui.textEdit.text().strip().split(' ')
+        print(f'Comando: {command}')
+        listTokens = []
+        error = ''
+        for i in range(len(command)):
+            band = False
+            palabra = command[i]
+
+            # print(f'Bandera antes del if {band}')
+            for e in range(len(self.tokens)):
+                if palabra == self.tokens[e][1]:
+                    print(f'Token: {self.tokens[e][0]}')
+                    listTokens.append(self.tokens[e][0])
+                    band = True
+                    break
+               
+
+            if band == False:       
+                for z in range(len(palabra)):
+                    charFinded = False
+
+                    char = palabra[z]
+
+                    # print(char)
+                   
+                    for e in range(len(self.tokens)):
+
+                        # print(self.tokens[e])
+
+                        if self.tokens[e][0] == 'numero' or self.tokens[e][0] == 'letra':
+
+                            if self.tokens[e][1].count(char) > 0:
+                                
+                                print(f'Token: {self.tokens[e][0]}')
+                                listTokens.append(self.tokens[e][0])
+                                band = True
+                                charFinded = True
+                                break
+                        
+                        elif char == self.tokens[e][1]:
+                            print(f'Token: {self.tokens[e][0]}')
+                            listTokens.append(self.tokens[e][0])
+                            band = True
+                            charFinded = True
+                            break
+
+                    if charFinded == False:
+                        band = False
+                        error = f'Cadena invalida\nEl carater siguiente no existe dentro de nuestros tokens {char}'
+                        break                        
+            if band == False:
+                listTokens.clear()
+                if error == '':
+                    listTokens.append(f'Cadena invalida\nEl carater siguiente no existe dentro de nuestros tokens {command[i]}')
+                else:
+                    listTokens.append(error)
+                break
+        cadenaT = ''
+
+        for i in range(len(listTokens)):
+            cadenaT = cadenaT + listTokens[i] + ' '
+        
+        font = QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(QFont.Bold)
+        self.ui.tokens.setFont(font)
+        self.ui.tokens.setText(cadenaT)
 
 
 
@@ -68,52 +140,12 @@ class main(QMainWindow):
     #         print(f'El carater siguiente no existe dentro de nuestros tokens {command[i]}')
     #         break
     
-        self.ui.buttonC.clicked.connect(self.getTockens) ##ESTO NO SE DONDE VA XD
+        # self.ui.buttonC.clicked.connect(self.getTockens) ##ESTO NO SE DONDE VA XD
 
-def getTockens(self):
-    command = self.ui.textEdit.text().split(' ')
-    listTokens = []
 
-    for i in range(len(command)):
-        band = False
-        palabra = command[i]
-
-        for e in range(len(self.tokens)):
-            if palabra == self.tokens[e][1]:
-                print(f'Token: {self.tokens[e][0]}')
-                listTokens.append(self.tokens[e][0])
-                band = True
-                break
-        if band == False:       
-            for z in range(len(palabra)):
-
-                char = palabra[z]
-
-                for e in range(len(self.tokens)):
-
-                    if self.tokens[e][0] == 'numero' or self.tokens[e][0] == 'letra':
-
-                        if self.tokens[e][1].count(char) > 0:
-                            print(f'Token: {self.tokens[e][0]}')
-                            listTokens.append(self.tokens[e][0])
-                            break
-                    
-                    elif char == self.tokens[e][1]:
-                        print(f'Token: {self.tokens[e][0]}')
-                        listTokens.append(self.tokens[e][0])
-                        break
-    cadenaT = ''
-    for i in range(len(listTokens)):
-        cadenaT = cadenaT + listTokens[i] + ' '
-    
-    font = QFont()
-    font.setPointSize(10)
-    font.setBold(False)
-    font.setWeight(QFont.Bold)
-    self.ui.tokens.setFont(font)
-    self.ui.tokens.setText(cadenaT)
 
 if __name__ == '__main__':
+    
     app = QApplication(sys.argv)
     window = main()
     window.show()
